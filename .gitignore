@@ -246,3 +246,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+# Added by Apify CLI
+.venv

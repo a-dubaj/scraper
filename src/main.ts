@@ -1,74 +1,16 @@
-import { PlaywrightCrawler, Dataset } from 'crawlee'
-import { selectors } from 'playwright'
+import { Actor } from 'apify'
+import { PlaywrightCrawler, log } from 'crawlee'
+import { router } from './route.js'
 
+await Actor.init()
+log.setLevel(log.LEVELS.DEBUG)
+
+log.debug('Setting up crawler.')
 const crawler = new PlaywrightCrawler({
-  requestHandler: async ({ page, enqueueLinks, request }) => {
-    console.log(request.url)
-
-    if (request.label === 'DETAIL') {
-      const title = await page.locator('.product-meta h1').textContent()
-      const sku = await page
-        .locator('span.product-meta__sku-number')
-        .textContent()
-
-      const priceElement = page
-        .locator('.span.price')
-        .filter({
-          hasText: '$',
-        })
-        .first()
-
-      const currentPrice = await priceElement.textContent()
-      const rawPrice = currentPrice?.split('$')[1]
-      const price = Number(rawPrice?.replace(',', ''))
-
-      const inStockElement = page
-        .locator('span.product-form__inventory')
-        .filter({
-          hasText: 'In Stock',
-        })
-        .first()
-
-      const inStock = (await inStockElement.count()) > 0
-      const results = {
-        url: request.url,
-        title,
-        sku,
-        currentPrice: price,
-        availableInStock: inStock
-      }
-
-      await Dataset.pushData({results})
-      //await Dataset.exportToJSON('save-products') // JSON
-      //await Dataset.exportToCSV('save-products') // CSV
-
-      console.log('Product title is: ', title)
-    } else if (request.label === 'COLLECTION') {
-      const productSelector = '.product-item > a'
-      const nextPageSelector = 'a.pagination_next'
-
-      await page.waitForSelector(productSelector)
-      await enqueueLinks({
-        selector: productSelector,
-        label: 'DETAIL',
-      })
-
-      const nextButton = await page.$(nextPageSelector)
-      if (nextButton) {
-        await enqueueLinks({
-          selector: nextPageSelector,
-          label: 'COLLECTION',
-        })
-      }
-    } else {
-      const collectionSelector = '.collection-block-item'
-      await page.waitForSelector(collectionSelector)
-      await enqueueLinks({
-        selector: collectionSelector,
-        label: 'COLLECTION',
-      })
-    }
-  },
+  maxRequestsPerCrawl: 50,
+  requestHandler: router,
 })
 
 await crawler.run(['https://warehouse-theme-metal.myshopify.com/collections'])
+
+await Actor.exit()
