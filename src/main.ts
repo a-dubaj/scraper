@@ -1,4 +1,4 @@
-import { PlaywrightCrawler } from 'crawlee'
+import { PlaywrightCrawler, Dataset } from 'crawlee'
 import { selectors } from 'playwright'
 
 const crawler = new PlaywrightCrawler({
@@ -7,14 +7,40 @@ const crawler = new PlaywrightCrawler({
 
     if (request.label === 'DETAIL') {
       const title = await page.locator('.product-meta h1').textContent()
-      const sku = await page.locator('product-meta_sku-number').textContent()
-      const priceElement = page.locator('.span.price').filter({
-        hasText: '$'
-      }).first()
+      const sku = await page
+        .locator('span.product-meta__sku-number')
+        .textContent()
+
+      const priceElement = page
+        .locator('.span.price')
+        .filter({
+          hasText: '$',
+        })
+        .first()
 
       const currentPrice = await priceElement.textContent()
       const rawPrice = currentPrice?.split('$')[1]
       const price = Number(rawPrice?.replace(',', ''))
+
+      const inStockElement = page
+        .locator('span.product-form__inventory')
+        .filter({
+          hasText: 'In Stock',
+        })
+        .first()
+
+      const inStock = (await inStockElement.count()) > 0
+      const results = {
+        url: request.url,
+        title,
+        sku,
+        currentPrice: price,
+        availableInStock: inStock
+      }
+
+      await Dataset.pushData({results})
+      //await Dataset.exportToJSON('save-products') // JSON
+      //await Dataset.exportToCSV('save-products') // CSV
 
       console.log('Product title is: ', title)
     } else if (request.label === 'COLLECTION') {
