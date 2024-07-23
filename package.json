@@ -9,9 +9,13 @@
     },
     "devDependencies": {
         "@apify/tsconfig": "^0.1.0",
+        "@types/node": "^20.0.0",
+        "eslint": "^9.7.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "prettier": "^3.3.3",
         "tsx": "^4.4.0",
-        "typescript": "~5.5.0",
-        "@types/node": "^20.0.0"
+        "typescript": "~5.5.0"
     },
     "scripts": {
         "start": "npm run start:dev",
