@@ -1,13 +1,14 @@
-import { PlaywrightCrawler } from 'crawlee';
-const crawler = new PlaywrightCrawler({
-    requestHandler: async ({page}) => {
-        await page.waitForSelector('.collection-block-item')
-        const title = await page.$$eval('.collection-block-item', (els) => {
-            return els.map((el) => el.textContent)
-        })
+import { PlaywrightCrawler } from 'crawlee'
 
-        title.forEach((text, index) => {
-            console.log(`Title ${index + 1 }: ${text}`)
+const crawler = new PlaywrightCrawler({
+    requestHandler: async ({page, enqueueLinks, request}) => {
+        console.log(request.url)
+        
+        const collectionSelector = '.collection-block-item'
+        await page.waitForSelector(collectionSelector)
+        await enqueueLinks({
+            selector: collectionSelector,
+            label: 'COLLECTION'
         })
     }
 })
