@@ -4,6 +4,7 @@
     "type": "module",
     "description": "Scraper",
     "dependencies": {
+        "apify": "^3.2.4",
         "crawlee": "^3.0.0",
         "playwright": "*"
     },

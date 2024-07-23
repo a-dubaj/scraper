@@ -37,6 +37,8 @@ router.addHandler('DETAIL', async ({ request, page, log }) => {
 
   log.debug(`Saving data: ${request.url}`)
   await Dataset.pushData(results)
+  // await Dataset.exportToJSON('saved-products')
+  await Dataset.exportToCSV('saved-products')
 })
 
 router.addHandler(
