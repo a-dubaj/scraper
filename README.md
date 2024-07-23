@@ -1,4 +1,9 @@
 # Scraper
+[![CI Build](https://github.com/a-dubaj/scraper/actions/workflows/build.yml/badge.svg)](https://github.com/a-dubaj/scraper/actions/workflows/build.yml)
+![Node Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Prettier](https://img.shields.io/badge/code%20style-prettier-ff69b4.svg)
+![npm version](https://img.shields.io/npm/v/scraper)
 
 ## Overview
 
@@ -26,7 +31,7 @@ Before you begin, ensure you have met the following requirements:
 
 ## After all the dependencies are installed you can start the scraper with.
 
-# start the development server
+# Start the development server
    ```bash
     npm run start
    ```
