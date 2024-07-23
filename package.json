@@ -10,7 +10,9 @@
     "devDependencies": {
         "@apify/tsconfig": "^0.1.0",
         "@types/node": "^20.0.0",
-        "eslint": "^9.7.0",
+        "@typescript-eslint/eslint-plugin": "^5.62.0",
+        "@typescript-eslint/parser": "^5.62.0",
+        "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.2.1",
         "prettier": "^3.3.3",
@@ -22,7 +24,9 @@
         "start:prod": "node dist/main.js",
         "start:dev": "tsx src/main.ts",
         "build": "tsc",
-        "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
+        "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1",
+        "lint": "eslint --config eslint.config.js 'src/**/*.{js,jsx,ts,tsx}'",
+        "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,css,md}'"
     },
     "author": "Andrzej Dubaj",
     "license": "ISC"
