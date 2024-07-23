@@ -6,6 +6,17 @@ const crawler = new PlaywrightCrawler({
     console.log(request.url)
 
     if (request.label === 'DETAIL') {
+      const title = await page.locator('.product-meta h1').textContent()
+      const sku = await page.locator('product-meta_sku-number').textContent()
+      const priceElement = page.locator('.span.price').filter({
+        hasText: '$'
+      }).first()
+
+      const currentPrice = await priceElement.textContent()
+      const rawPrice = currentPrice?.split('$')[1]
+      const price = Number(rawPrice?.replace(',', ''))
+
+      console.log('Product title is: ', title)
     } else if (request.label === 'COLLECTION') {
       const productSelector = '.product-item > a'
       const nextPageSelector = 'a.pagination_next'
